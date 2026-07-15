@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <title>MindLens 이메일 인증</title>
+    <script>
+      (() => {
+        const hash = new URLSearchParams(location.hash.slice(1));
+        const query = new URLSearchParams(location.search.slice(1));
+        const rawError = hash.get('error_description') || query.get('error_description');
+        const verified = Boolean(query.get('code') || hash.get('access_token') || query.get('type') === 'signup' || hash.get('type') === 'signup');
+        window.__MINDLENS_AUTH_RESULT__ = rawError
+          ? { state: 'error', message: decodeURIComponent(rawError.replace(/\+/g, ' ')) }
+          : { state: verified ? 'success' : 'neutral' };
+        history.replaceState(null, '', '/auth/confirmed');
+      })();
+    </script>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <main data-state="neutral">
+      <div class="brand">MindLens</div>
+      <div class="mark" aria-hidden="true">i</div>
+      <h1>MindLens 이메일 인증</h1>
+      <p id="message">인증 상태를 확인하고 있어요.</p>
+      <div class="actions">
+        <a class="button" href="mindlens://auth/confirmed">MindLens 앱 열기</a>
+      </div>
+      <p class="hint">잠시만 기다려주세요.</p>
+    </main>
+    <script src="/assets/confirm.js"></script>
+  </body>
+</html>

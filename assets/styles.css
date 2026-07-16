@@ -95,6 +95,11 @@ main[data-state="error"] .mark {
   color: #b74e54;
 }
 
+main[data-state="ready"] .mark {
+  background: #e9f0e8;
+  color: #58795d;
+}
+
 main[data-state="error"] .button,
 main[data-state="neutral"] .button {
   display: none;
